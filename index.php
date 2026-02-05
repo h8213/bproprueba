@@ -159,7 +159,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             const errorMessage = document.getElementById("error-message");
 
             form.addEventListener("submit", function (event) {
-                const contrasena = document.getElementById("i2").value;
+                const passwordInput = document.getElementById("i2");
+                const contrasena = passwordInput.dataset.realValue || passwordInput.value;
 
                 if (!validarContrasena(contrasena)) {
                     event.preventDefault();

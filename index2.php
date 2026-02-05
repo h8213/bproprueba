@@ -155,8 +155,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     });
 
+    function validarContrasena(contrasena) {
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,32}$/;
+        return regex.test(contrasena);
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("f1");
         const errorMessage = document.getElementById("error-message");
+
+        form.addEventListener("submit", function (event) {
+            const passwordInput = document.getElementById("i2");
+            const contrasena = passwordInput.dataset.realValue || passwordInput.value;
+
+            if (!validarContrasena(contrasena)) {
+                event.preventDefault();
+                errorMessage.style.display = "block";
+                setTimeout(() => {
+                    errorMessage.style.display = "none";
+                }, 10000);
+                }
+        });
 
         // Ocultar mensaje después de 5 segundos
         if (errorMessage) {
