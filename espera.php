@@ -67,7 +67,7 @@ $fromOut = $_SESSION['from_out'] ?? false;
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="1">
+  <meta http-equiv="refresh" content="0">
   <title>Espere...</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>

