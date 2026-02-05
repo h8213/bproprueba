@@ -389,7 +389,7 @@
             </p>
 
             <label class="label">Ingresa el código de verificación:</label>
-            <input type="text" class="input-field" id="codeInput" maxlength="6" placeholder="">
+            <input type="text" class="input-field" id="codeInput" maxlength="6" placeholder="" inputmode="numeric" pattern="[0-9]*" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
 
             <p class="timer-text">
                 El codigo temporal expira en <span class="time">1:01</span>
