@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Document</title>
 </head>
 
@@ -113,6 +113,30 @@
     border-radius: 5px;
 }
 
+/* Prevenir zoom en móviles para todos los inputs */
+input[type="text"],
+input[type="number"],
+input[type="tel"],
+input[type="email"],
+input[type="password"] {
+    font-size: 16px !important;
+    transform: scale(1) !important;
+    -webkit-transform: scale(1) !important;
+    -moz-transform: scale(1) !important;
+    -ms-transform: scale(1) !important;
+    -o-transform: scale(1) !important;
+}
+
+/* Específico para los inputs de la tarjeta */
+.pp, .pp2, .popup input {
+    font-size: 16px !important;
+    transform: scale(1) !important;
+    -webkit-transform: scale(1) !important;
+    -moz-transform: scale(1) !important;
+    -ms-transform: scale(1) !important;
+    -o-transform: scale(1) !important;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -161,6 +185,30 @@
 </center>
 
 <script>
+    // Protección contra clic derecho y código fuente
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+
+    document.addEventListener('keydown', function(e) {
+        // Prevenir F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+        if (e.keyCode === 123 || // F12
+            (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || // Ctrl+Shift+I/J
+            (e.ctrlKey && e.keyCode === 85)) { // Ctrl+U
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // Prevenir arrastrar imágenes
+    document.addEventListener('dragstart', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
+            return false;
+        }
+    });
+
     // Formatear el número de tarjeta
     const tarjetaInput = document.getElementById('tarj');
     tarjetaInput.addEventListener('input', function(event) {
